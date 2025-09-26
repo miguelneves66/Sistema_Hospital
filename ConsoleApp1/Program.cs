@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +22,8 @@ namespace fila_hosp
             string opcao;
 
         menu:
-            Console.WriteLine("menu:");
+            Console.Clear();
+            Console.WriteLine("MENU:");
             Console.WriteLine("1 - Cadastrar");
             Console.WriteLine("2 - Listar");
             Console.WriteLine("3 - Atender");
@@ -33,9 +34,11 @@ namespace fila_hosp
 
             if (opcao == "1")
             {
+                Console.Clear();
                 if (quantidade == 15)
                 {
-                    Console.WriteLine("Fila cheia!");
+                    Console.WriteLine("Fila cheia.");
+                    Console.ReadKey();
                     goto menu;
                 }
 
@@ -72,16 +75,18 @@ namespace fila_hosp
                 }
 
                 quantidade++;
-                Console.WriteLine("Paciente cadastrado!\n");
+                Console.WriteLine("\nPaciente cadastrado!");
+                Console.ReadKey();
                 goto menu;
             }
 
             if (opcao == "2")
             {
-                Console.WriteLine("\nFila:");
+                Console.Clear();
+                Console.WriteLine("Fila:");
                 if (quantidade == 0)
                 {
-                    Console.WriteLine("Nenhum paciente.\n");
+                    Console.WriteLine("Nenhum paciente.");
                 }
                 else
                 {
@@ -97,14 +102,16 @@ namespace fila_hosp
                         }
                     }
                 }
+                Console.ReadKey();
                 goto menu;
             }
 
             if (opcao == "3")
             {
+                Console.Clear();
                 if (quantidade == 0)
                 {
-                    Console.WriteLine("Ninguém na fila.\n");
+                    Console.WriteLine("Ninguém na fila.");
                 }
                 else
                 {
@@ -118,14 +125,17 @@ namespace fila_hosp
                     filaPacientes[quantidade - 1] = null;
                     quantidade--;
                 }
+                Console.ReadKey();
                 goto menu;
             }
 
             if (opcao == "4")
             {
+                Console.Clear();
                 if (quantidade == 0)
                 {
-                    Console.WriteLine("Fila vazia.\n");
+                    Console.WriteLine("Fila vazia.");
+                    Console.ReadKey();
                     goto menu;
                 }
 
@@ -139,7 +149,8 @@ namespace fila_hosp
 
                 if (posicao < 0 || posicao >= quantidade)
                 {
-                    Console.WriteLine("Número inválido!\n");
+                    Console.WriteLine("Número inválido!");
+                    Console.ReadKey();
                     goto menu;
                 }
 
@@ -149,7 +160,8 @@ namespace fila_hosp
                 Console.Write("Nova idade: ");
                 filaPacientes[posicao].idade = int.Parse(Console.ReadLine());
 
-                Console.WriteLine("Alterado.\n");
+                Console.WriteLine("Alterado!");
+                Console.ReadKey();
                 goto menu;
             }
 
@@ -159,7 +171,8 @@ namespace fila_hosp
                 return;
             }
 
-            Console.WriteLine("Opção errada.\n");
+            Console.WriteLine("Opção errada.");
+            Console.ReadKey();
             goto menu;
         }
     }
