@@ -4,84 +4,75 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace sitema_hosp
+namespace fila_hosp
 {
     class Paciente
     {
-        public string Nome;
-        public int Idade;
-        public virtual bool Preferencial { get { return false; } }
-        public override string ToString()
-        {
-            return Nome + " - " + Idade + " anos";
-        }
+        public string nome;
+        public int idade;
+        public bool preferencial;
     }
 
-    class PacientePreferencial : Paciente
-    {
-        public override bool Preferencial { get { return true; } }
-    }
-
-    internal class Program
+    class Program
     {
         static void Main(string[] args)
         {
-            Paciente[] fila = new Paciente[15];
+            Paciente[] filaPacientes = new Paciente[15];
             int quantidade = 0;
             string opcao;
 
         menu:
-            Console.WriteLine("menu:\n");
-            Console.WriteLine("1-Cadastrar paciente");
-            Console.WriteLine("2-Listar fila");
-            Console.WriteLine("3-Atender paciente");
-            Console.WriteLine("4-Alterar paciente");
-            Console.WriteLine("q-Sair\n");
-            Console.Write(": ");
+            Console.WriteLine("menu:");
+            Console.WriteLine("1 - Cadastrar");
+            Console.WriteLine("2 - Listar");
+            Console.WriteLine("3 - Atender");
+            Console.WriteLine("4 - Alterar");
+            Console.WriteLine("q - Sair");
+            Console.Write("Opção: ");
             opcao = Console.ReadLine();
+
             if (opcao == "1")
             {
-                if (quantidade >= 15)
+                if (quantidade == 15)
                 {
-                    Console.WriteLine("Fila cheia.\n");
+                    Console.WriteLine("Fila cheia!");
                     goto menu;
                 }
 
-                Console.Write("Nome: ");
-                string nome = Console.ReadLine();
-                Console.Write("Idade: ");
-                int idade = int.Parse(Console.ReadLine());
-                Console.Write("Preferencial? (s/n): ");
-                string pref = Console.ReadLine();
+                Paciente paciente = new Paciente();
 
-                Paciente p;
-                if (pref == "s")
+                Console.Write("Nome: ");
+                paciente.nome = Console.ReadLine();
+
+                Console.Write("Idade: ");
+                paciente.idade = int.Parse(Console.ReadLine());
+
+                Console.Write("Preferencial? (s/n): ");
+                string resposta = Console.ReadLine();
+                if (resposta == "s")
                 {
-                    p = new PacientePreferencial();
+                    paciente.preferencial = true;
                 }
                 else
                 {
-                    p = new Paciente();
+                    paciente.preferencial = false;
                 }
 
-                p.Nome = nome;
-                p.Idade = idade;
-
-                if (p.Preferencial == true)
+                if (paciente.preferencial == true)
                 {
                     for (int i = quantidade; i > 0; i--)
                     {
-                        fila[i] = fila[i - 1];
+                        filaPacientes[i] = filaPacientes[i - 1];
                     }
-                    fila[0] = p;
+                    filaPacientes[0] = paciente;
                 }
                 else
                 {
-                    fila[quantidade] = p;
+                    filaPacientes[quantidade] = paciente;
                 }
 
-                quantidade = quantidade + 1;
-                Console.WriteLine("Paciente cadastrado.\n");
+                quantidade++;
+                Console.WriteLine("Paciente cadastrado!\n");
                 goto menu;
             }
 
@@ -90,23 +81,20 @@ namespace sitema_hosp
                 Console.WriteLine("\nFila:");
                 if (quantidade == 0)
                 {
-                    Console.WriteLine("Fila vazia.\n");
+                    Console.WriteLine("Nenhum paciente.\n");
                 }
                 else
                 {
                     for (int i = 0; i < quantidade; i++)
                     {
-                        string tipo;
-                        if (fila[i].Preferencial == true)
+                        if (filaPacientes[i].preferencial == true)
                         {
-                            tipo = "[P]";
+                            Console.WriteLine((i + 1) + ". " + filaPacientes[i].nome + " - " + filaPacientes[i].idade + " anos [P]");
                         }
                         else
                         {
-                            tipo = "";
+                            Console.WriteLine((i + 1) + ". " + filaPacientes[i].nome + " - " + filaPacientes[i].idade + " anos");
                         }
-
-                        Console.WriteLine((i + 1) + ". " + fila[i] + " " + tipo);
                     }
                 }
                 goto menu;
@@ -116,19 +104,19 @@ namespace sitema_hosp
             {
                 if (quantidade == 0)
                 {
-                    Console.WriteLine("Nenhum paciente.");
+                    Console.WriteLine("Ninguém na fila.\n");
                 }
                 else
                 {
-                    Console.WriteLine("Atendendo: " + fila[0]);
+                    Console.WriteLine("Atendendo: " + filaPacientes[0].nome + " - " + filaPacientes[0].idade + " anos");
 
                     for (int i = 0; i < quantidade - 1; i++)
                     {
-                        fila[i] = fila[i + 1];
+                        filaPacientes[i] = filaPacientes[i + 1];
                     }
 
-                    fila[quantidade - 1] = null;
-                    quantidade = quantidade - 1;
+                    filaPacientes[quantidade - 1] = null;
+                    quantidade--;
                 }
                 goto menu;
             }
@@ -137,28 +125,29 @@ namespace sitema_hosp
             {
                 if (quantidade == 0)
                 {
-                    Console.WriteLine("Fila vazia.");
+                    Console.WriteLine("Fila vazia.\n");
                     goto menu;
                 }
 
                 for (int i = 0; i < quantidade; i++)
                 {
-                    Console.WriteLine((i + 1) + ". " + fila[i]);
+                    Console.WriteLine((i + 1) + ". " + filaPacientes[i].nome + " - " + filaPacientes[i].idade + " anos");
                 }
 
                 Console.Write("Número do paciente: ");
-                int pos = int.Parse(Console.ReadLine()) - 1;
+                int posicao = int.Parse(Console.ReadLine()) - 1;
 
-                if (pos < 0 || pos >= quantidade)
+                if (posicao < 0 || posicao >= quantidade)
                 {
-                    Console.WriteLine("Inválido.\n");
+                    Console.WriteLine("Número inválido!\n");
                     goto menu;
                 }
 
                 Console.Write("Novo nome: ");
-                fila[pos].Nome = Console.ReadLine();
+                filaPacientes[posicao].nome = Console.ReadLine();
+
                 Console.Write("Nova idade: ");
-                fila[pos].Idade = int.Parse(Console.ReadLine());
+                filaPacientes[posicao].idade = int.Parse(Console.ReadLine());
 
                 Console.WriteLine("Alterado.\n");
                 goto menu;
@@ -166,11 +155,11 @@ namespace sitema_hosp
 
             if (opcao == "q")
             {
-                Console.WriteLine("Saindo...\n");
+                Console.WriteLine("Saindo...");
                 return;
             }
 
-            Console.WriteLine("Opção errada!\n");
+            Console.WriteLine("Opção errada.\n");
             goto menu;
         }
     }
